@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Farm Link</title>
+
+<style>
+/* ========== GLOBAL ========== */
+*{
+  box-sizing:border-box;
+  font-family:Segoe UI,Arial;
+  scroll-behavior:smooth;
+}
+body{
+  margin:0;
+  background:#f3f6f5;
+  animation:fadeIn 1s ease;
+}
+
+/* ========== NAVBAR ========== */
+nav{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:#2f8f5b;
+  color:white;
+  padding:15px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 8px 20px rgba(0,0,0,.2);
+}
+nav h2{margin:0;cursor:pointer}
+nav a{
+  color:white;
+  margin-left:20px;
+  text-decoration:none;
+  font-weight:500;
+  cursor:pointer;
+  transition:.3s;
+}
+nav a:hover{
+  color:#e6ffe9;
+  background:#1f6f43;
+  padding:6px 12px;
+  border-radius:6px;
+  transform:translateY(-2px);
+}
+
+/* ========== HERO ========== */
+.hero{
+  text-align:center;
+  padding:90px 20px;
+  background:white;
+}
+.hero h1{
+  font-size:42px;
+  color:#2f8f5b;
+  animation:slideDown .8s ease;
+}
+.hero p{color:#666;font-size:18px}
+.hero button{
+  margin-top:25px;
+  padding:14px 32px;
+  background:#2f8f5b;
+  border:none;
+  color:white;
+  border-radius:30px;
+  cursor:pointer;
+  font-size:16px;
+  transition:.4s;
+}
+.hero button:hover{
+  transform:scale(1.1);
+  background:#1f6f43;
+}
+
+/* ========== SECTIONS ========== */
+section{
+  padding:50px;
+  animation:fadeUp .8s ease;
+}
+
+/* ========== PRODUCTS ========== */
+.products{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:30px;
+}
+.card{
+  background:white;
+  padding:20px;
+  border-radius:14px;
+  box-shadow:0 12px 30px rgba(0,0,0,.12);
+  text-align:center;
+  transition:.4s;
+}
+.card:hover{
+  transform:translateY(-10px) scale(1.05);
+}
+.card img{
+  width:100%;
+  height:170px;
+  object-fit:cover;
+  border-radius:12px;
+}
+.card button{
+  margin-top:12px;
+  width:100%;
+  padding:10px;
+  background:#2f8f5b;
+  border:none;
+  color:white;
+  border-radius:8px;
+  cursor:pointer;
+}
+.card button:hover{
+  background:#1f6f43;
+}
+
+/* ========== FARMER DASHBOARD ========== */
+.form-card{
+  max-width:450px;
+  margin:auto;
+  background:white;
+  padding:35px;
+  border-radius:16px;
+  box-shadow:0 15px 35px rgba(0,0,0,.15);
+}
+.form-card input{
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+}
+.form-card button{
+  width:100%;
+  padding:12px;
+  background:#2f8f5b;
+  color:white;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+.form-card button:hover{
+  background:#1f6f43;
+  transform:scale(1.05);
+}
+
+/* ========== CART ========== */
+.cart-item{
+  background:white;
+  padding:18px;
+  margin:12px 0;
+  border-radius:10px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 6px 20px rgba(0,0,0,.1);
+}
+.cart-actions{
+  text-align:right;
+  margin-top:20px;
+}
+.cart-actions button{
+  padding:12px 30px;
+  background:#2f8f5b;
+  color:white;
+  border:none;
+  border-radius:30px;
+  cursor:pointer;
+  font-size:16px;
+}
+.cart-actions button:hover{
+  background:#1f6f43;
+  transform:scale(1.08);
+}
+
+/* ========== LOGIN ========== */
+#loginBox{
+  max-width:380px;
+  margin:130px auto;
+  background:white;
+  padding:40px;
+  border-radius:20px;
+  box-shadow:0 20px 50px rgba(0,0,0,.25);
+  text-align:center;
+  animation:fadeUp .8s ease;
+}
+#loginBox input{
+  width:100%;
+  margin:10px 0;
+  padding:12px;
+}
+
+/* ========== FOOTER ========== */
+footer{
+  background:#2f8f5b;
+  color:white;
+  text-align:center;
+  padding:18px;
+  margin-top:60px;
+}
+
+/* ========== UTILS ========== */
+button{cursor:pointer}
+.hidden{display:none}
+.warning{color:red;text-align:center;margin-top:10px}
+
+/* ========== ANIMATIONS ========== */
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-40px)}to{opacity:1}}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="loginBox">
+  <h2>Farm Link Login</h2>
+  <input id="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
+  <button onclick="login()">Login</button>
+  <div id="loginError" class="warning"></div>
+</div>
+
+<!-- APP -->
+<div id="app" class="hidden">
+
+<nav>
+  <h2>Farm Link</h2>
+  <div>
+    <a onclick="show('shop')">Shop</a>
+    <a onclick="show('cart')">Cart (<span id="cartCount">0</span>)</a>
+    <a onclick="show('farmer')">Farmer</a>
+    <a onclick="logout()">Logout</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <h1>Buy Fresh. Buy Local.</h1>
+  <p>Connecting Farmers Directly with Consumers</p>
+  <button onclick="show('shop')">Explore Products</button>
+</div>
+
+<section id="shop">
+  <h2>Available Vegetables</h2>
+  <div class="products" id="productGrid"></div>
+</section>
+
+<section id="cart" class="hidden">
+  <h2>Your Cart</h2>
+  <div id="cartItems"></div>
+  <div class="cart-actions">
+    <button onclick="buyNow()">Buy Now</button>
+  </div>
+</section>
+
+<section id="farmer" class="hidden">
+  <h2>Farmer Dashboard</h2>
+  <div class="form-card">
+    <input id="pname" placeholder="Product Name">
+    <input id="pprice" placeholder="Price (₹)">
+    <input type="file" id="pfile" accept="image/*">
+    <input id="pimg" placeholder="Image URL (optional)">
+    <button onclick="addProduct()">Upload Product</button>
+  </div>
+</section>
+
+<footer>
+  © 2026 Farm Link | Empowering Farmers Digitally 🌱
+</footer>
+
+</div>
+
+<script>
+/* LOGIN PATTERN */
+const emailPattern=/^kiranmanda68567@gmail\.com$/;
+const passPattern=/^1234$/;
+
+function login(){
+  if(emailPattern.test(email.value) && passPattern.test(password.value)){
+    loginBox.classList.add("hidden");
+    app.classList.remove("hidden");
+    loadProducts();
+  }else{
+    loginError.innerText="Invalid login credentials";
+  }
+}
+
+function logout(){
+  cart=[];
+  cartCount.innerText=0;
+  app.classList.add("hidden");
+  loginBox.classList.remove("hidden");
+}
+
+/* DATA */
+let products=[
+ {name:"Tomatoes",price:40,img:"tomato.jpg"},
+ {name:"Carrots",price:30,img:"carrot.jpg"},
+ {name:"Spinach",price:20,img:"spinach.jpg"}
+];
+let cart=[];
+
+/* PRODUCTS */
+function loadProducts(){
+  productGrid.innerHTML="";
+  products.forEach((p,i)=>{
+    productGrid.innerHTML+=`
+      <div class="card">
+        <img src="${p.img}">
+        <h3>${p.name}</h3>
+        <p>₹${p.price}</p>
+        <button onclick="addToCart(${i})">Add to Cart</button>
+      </div>`;
+  });
+}
+
+function addProduct(){
+  if(products.some(p=>p.name.toLowerCase()===pname.value.toLowerCase())){
+    alert("Product already exists!");
+    return;
+  }
+  if(pfile.files[0]){
+    let r=new FileReader();
+    r.onload=e=>{
+      products.push({name:pname.value,price:pprice.value,img:e.target.result});
+      loadProducts();
+    };
+    r.readAsDataURL(pfile.files[0]);
+  }else{
+    products.push({
+      name:pname.value,
+      price:pprice.value,
+      img:pimg.value||"https://via.placeholder.com/400"
+    });
+    loadProducts();
+  }
+  pname.value=pprice.value=pimg.value="";
+  pfile.value="";
+}
+
+/* CART */
+function addToCart(i){
+  cart.push(products[i]);
+  cartCount.innerText=cart.length;
+}
+function loadCart(){
+  cartItems.innerHTML="";
+  cart.forEach((c,i)=>{
+    cartItems.innerHTML+=`
+      <div class="cart-item">
+        <span>${c.name} - ₹${c.price}</span>
+        <button onclick="removeFromCart(${i})">Remove</button>
+      </div>`;
+  });
+}
+function removeFromCart(i){
+  cart.splice(i,1);
+  cartCount.innerText=cart.length;
+  loadCart();
+}
+
+/* BUY */
+function buyNow(){
+  if(cart.length===0){
+    alert("Cart is empty!");
+    return;
+  }
+  alert("✅ Order placed successfully!");
+  cart=[];
+  cartCount.innerText=0;
+  loadCart();
+}
+
+/* NAV */
+function show(id){
+  ["shop","cart","farmer"].forEach(s=>document.getElementById(s).classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+  if(id==="cart") loadCart();
+}
+</script>
+
+</body>
+</html>
+
